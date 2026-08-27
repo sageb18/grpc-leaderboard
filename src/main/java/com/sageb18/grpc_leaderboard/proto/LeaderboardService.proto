@@ -1,0 +1,35 @@
+syntax = "proto3";
+package grpc_leaderboard;
+
+option java_package = "com.sageb18.grpcleaderboard.grpc";
+option java_multiple_files = true;
+
+service LeaderboardService {
+  rpc SubmitScore (SubmitScoreRequest) returns (SubmitScoreResponse);
+  rpc GetTopScores (GetTopScoresRequest) returns (GetTopScoresResponse);
+}
+
+message LeaderboardEntry {
+  string user_id = 1;
+  string username = 2;
+  int64 score = 3;
+  int32 rank = 4;
+}
+
+message SubmitScoreRequest {
+  string user_id = 1;
+  int64 score = 2;
+}
+
+message SubmitScoreResponse {
+  bool success = 1;
+  int64 updated_score = 2; // replaces old score
+}
+
+message GetTopScoresRequest {
+  int32 limit = 1; // ex: top 10, top 50, top 100
+}
+
+message GetTopScoresResponse {
+  repeated LeaderboardEntry entries = 1;
+}
